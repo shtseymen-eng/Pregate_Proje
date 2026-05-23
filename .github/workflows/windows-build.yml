@@ -1,0 +1,32 @@
+name: Windows EXE Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Kodlari al
+        uses: actions/checkout@v4
+
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Kutuphaneleri yukle
+        run: |
+          python -m pip install --upgrade pip
+          pip install customtkinter pandas openpyxl python-pptx pyinstaller
+
+      - name: EXE olustur
+        run: |
+          pyinstaller --onefile --windowed --name Pregate_Operasyon_Dashboard pregate_dashboard_dosya_secimli.py
+
+      - name: EXE yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pregate_Operasyon_Dashboard_EXE
+          path: dist/Pregate_Operasyon_Dashboard.exe
